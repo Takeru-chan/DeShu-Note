@@ -8,10 +8,11 @@
   td{height:44px;text-align:center;color:black;font-weight:bolder;}
   table,th,td{border:solid 3px #dedede;}
   th,td{width:38px;}
-  .dryday{background:url('./dry.png');}
+  .dryday{background:url('./images/dry.png');}
+  .drinkday{background:url('./images/beer.png');}
   .lowlight{color:lightgray;}
   #tableheader,#tablelabel{height:1.2em;}
-  #today{background:lightgreen;}
+  #today{background:url('./images/check.png');}
   #nav{display:flex;justify-content:space-around;align-items:center;}
   #nav a{text-decoration:none;}
 </style>
@@ -46,12 +47,18 @@ for ($row = 0;$row < 6;$row++) {
   for ($col = 0;$col < 7;$col++) {
     if ($dispDatetime->format('n') != $dispMonth) {
       $tablerow[$row] = $tablerow[$row]."<td class='lowlight'>".$dispDatetime->format('j')."</td>";
-    } else if ($dispDatetime->format('j') == 6 or $dispDatetime->format('j') == 17) {
-      $tablerow[$row] = $tablerow[$row]."<td class='dryday'>".$dispDatetime->format('j')."</td>";
-    } else if ($dispDatetime == $currDatetime) {
-      $tablerow[$row] = $tablerow[$row]."<td id='today'>".$dispDatetime->format('j')."</td>";
     } else {
-      $tablerow[$row] = $tablerow[$row]."<td>".$dispDatetime->format('j')."</td>";
+      if ($dispDatetime > $currDatetime) {
+        $tablerow[$row] = $tablerow[$row]."<td>".$dispDatetime->format('j')."</td>";
+      } else if ($dispDatetime == $currDatetime) {
+        $tablerow[$row] = $tablerow[$row]."<td id='today'>".$dispDatetime->format('j')."</td>";
+      } else {
+        if ($dispDatetime->format('j') == 6 or $dispDatetime->format('j') == 17) {
+          $tablerow[$row] = $tablerow[$row]."<td class='dryday'>".$dispDatetime->format('j')."</td>";
+        } else {
+          $tablerow[$row] = $tablerow[$row]."<td class='drinkday'>".$dispDatetime->format('j')."</td>";
+        }
+      }
     }
     $dispDatetime->modify('1 days');
   }
