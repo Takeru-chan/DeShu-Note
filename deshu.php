@@ -16,36 +16,34 @@
 <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
 </head><body>
 <h1>DE酒🍻のぉと</h1>
-<p>"DEcreasing inSHU" NOTE, 2018</p>
+<p>"DEcreasing inSHU" NOTE</p>
 <?php
 date_default_timezone_set('Asia/Tokyo');
-$datetime = new DateTime();
-$month = (int)$datetime->format('n');
-$day = (int)$datetime->format('j');
-$title = "<table><tr id='tableheader'><th colspan=7>".$datetime->format('F')." ".(int)$datetime->format('Y')."</th></tr>";
-echo $title;
-echo "<tr id='tablelabel'><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr>";
-$adjustdate = 1 - (int)$datetime->format('j');
-$datetime->modify($adjustdate.' days');
-$adjustdate = 0 - (int)$datetime->format('w');
-$datetime->modify($adjustdate.' days');
-$tablerow = array();
-for ($row=0;$row<6;$row++) {
+$currDatetime = new Datetime();
+$dispDatetime = clone $currDatetime;
+$dispMonth = (int)$dispDatetime->format('n');
+echo "<p>".$dispDatetime->format('F')." ".(int)$dispDatetime->format('Y')."</p>";
+echo "<table><tr id='tablelabel'><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr>";
+$adjustdate = 1 - (int)$dispDatetime->format('j');
+$dispDatetime->modify($adjustdate.' days');
+$adjustdate = 0 - (int)$dispDatetime->format('w');
+$dispDatetime->modify($adjustdate.' days');
+for ($row = 0;$row < 6;$row++) {
   $tablerow[$row] = "<tr>";
-  for ($col=0;$col<7;$col++) {
-    if ($datetime->format('n') != $month) {
-      $tablerow[$row] = $tablerow[$row]."<td class='lowlight'>".$datetime->format('j')."</td>";
-    } else if ($datetime->format('j') == 6 or $datetime->format('j') == 17) {
-      $tablerow[$row] = $tablerow[$row]."<td class='dryday'>".$datetime->format('j')."</td>";
-    } else if ($datetime->format('j') == $day) {
-      $tablerow[$row] = $tablerow[$row]."<td id='today'>".$datetime->format('j')."</td>";
+  for ($col = 0;$col < 7;$col++) {
+    if ($dispDatetime->format('n') != $dispMonth) {
+      $tablerow[$row] = $tablerow[$row]."<td class='lowlight'>".$dispDatetime->format('j')."</td>";
+    } else if ($dispDatetime->format('j') == 6 or $dispDatetime->format('j') == 17) {
+      $tablerow[$row] = $tablerow[$row]."<td class='dryday'>".$dispDatetime->format('j')."</td>";
+    } else if ($dispDatetime == $currDatetime) {
+      $tablerow[$row] = $tablerow[$row]."<td id='today'>".$dispDatetime->format('j')."</td>";
     } else {
-      $tablerow[$row] = $tablerow[$row]."<td>".$datetime->format('j')."</td>";
+      $tablerow[$row] = $tablerow[$row]."<td>".$dispDatetime->format('j')."</td>";
     }
-    $datetime->modify('1 days');
+    $dispDatetime->modify('1 days');
   }
   $tablerow[$row] = $tablerow[$row]."</tr>";
-echo $tablerow[$row];
+  echo $tablerow[$row];
 }
 echo "</table>";
 ?>
