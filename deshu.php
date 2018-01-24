@@ -12,16 +12,29 @@
   .lowlight{color:lightgray;}
   #tableheader,#tablelabel{height:1.2em;}
   #today{background:lightgreen;}
+  #nav{display:flex;justify-content:space-around;align-items:center;}
+  #nav a{text-decoration:none;}
 </style>
 <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
 </head><body>
 <h1>DE酒🍻のぉと</h1>
-<p>"DEcreasing inSHU" NOTE</p>
 <?php
 date_default_timezone_set('Asia/Tokyo');
 $currDatetime = new Datetime();
 $dispDatetime = clone $currDatetime;
+$year = $_GET["year"];
+$month = $_GET["month"];
+if ($year > 1900 and ($month > 0 and $month < 13)) {
+  $dispDatetime->setDate($year,$month,1);
+}
+$prevDatetime = clone $dispDatetime;
+$nextDatetime = clone $dispDatetime;
+$prevDatetime->modify('-1 months');
+$nextDatetime->modify('1 months');
 $dispMonth = (int)$dispDatetime->format('n');
+echo "<div id='nav'><p><a href='?year=".$prevDatetime->format('Y')."&month=".$prevDatetime->format('n')."'>&#9664;</a></p>";
+echo "<p><a href='?year=".$currDatetime->format('Y')."&month=".$currDatetime->format('n')."'>'DEcreasing inSHU' NOTE</a></p>";
+echo "<p><a href='?year=".$nextDatetime->format('Y')."&month=".$nextDatetime->format('n')."'>&#9654;</a></p></div>";
 echo "<p>".$dispDatetime->format('F')." ".(int)$dispDatetime->format('Y')."</p>";
 echo "<table><tr id='tablelabel'><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr>";
 $adjustdate = 1 - (int)$dispDatetime->format('j');
