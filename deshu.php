@@ -24,10 +24,14 @@ date_default_timezone_set('Asia/Tokyo');
 $currDatetime = new Datetime();
 $dispDatetime = clone $currDatetime;
 $year = $_GET["year"];
-$month = $_GET["month"];
-if ($year > 1900 and ($month > 0 and $month < 13)) {
-  $dispDatetime->setDate($year,$month,1);
+if ($year < 1900) {
+  $year = $currDatetime->format('Y');
 }
+$month = $_GET["month"];
+if ($month < 1 and $month > 12) {
+  $month = $currDatetime->format('n');
+}
+$dispDatetime->setDate($year,$month,1);
 $prevDatetime = clone $dispDatetime;
 $nextDatetime = clone $dispDatetime;
 $prevDatetime->modify('-1 months');
@@ -38,10 +42,7 @@ echo "<p><a href='?year=".$currDatetime->format('Y')."&month=".$currDatetime->fo
 echo "<p><a href='?year=".$nextDatetime->format('Y')."&month=".$nextDatetime->format('n')."'>&#9654;</a></p></div>";
 echo "<p>".$dispDatetime->format('F')." ".(int)$dispDatetime->format('Y')."</p>";
 echo "<table><tr id='tablelabel'><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr>";
-$adjustdate = 1 - (int)$dispDatetime->format('j');
-$dispDatetime->modify($adjustdate.' days');
-$adjustdate = 0 - (int)$dispDatetime->format('w');
-$dispDatetime->modify($adjustdate.' days');
+$dispDatetime->modify('-'.(int)$dispDatetime->format('w').' days');
 for ($row = 0;$row < 6;$row++) {
   $tablerow[$row] = "<tr>";
   for ($col = 0;$col < 7;$col++) {
