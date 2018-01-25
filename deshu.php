@@ -17,6 +17,7 @@ foreach(glob("./deshu-note/".$dispDatetime->format('Y').$dispDatetime->format('m
 $stylesheet = <<< EOM
 <style>
   *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;margin:0;padding:0;text-align:center;}
+  body{width:320px;margin:auto;}
   table{font-family: 'Cormorant Garamond', serif;border-collapse:collapse;margin:auto;}
   td{height:44px;text-align:center;color:black;font-weight:bolder;}
   table,th,td{border:solid 3px #dedede;}

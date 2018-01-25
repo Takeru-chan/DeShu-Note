@@ -8,6 +8,8 @@
 
 iPhoneのブラウザでアクセスします。  
 
+![./images/site-image-1.png'] ![./images/site-image-2.png]
+
 phpが動作するWebサーバーのドキュメントルート以下にプログラムファイルdeshu.phpを配置します。  
 
 プログラムファイル配置ディレクトリ中のデータディレクトリ「deshu-note」下にyyyymmdd（休肝日の日付）.deshuというファイル名のデータを配置します。  
