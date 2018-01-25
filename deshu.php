@@ -7,7 +7,7 @@ if ($year < 1900) {
   $year = $currDatetime->format('Y');
 }
 $month = $_GET["month"];
-if ($month < 1 and $month > 12) {
+if ($month < 1 or $month > 12) {
   $month = $currDatetime->format('n');
 }
 $dispDatetime->setDate($year,$month,1);
