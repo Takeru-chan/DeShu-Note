@@ -8,7 +8,7 @@
 
 iPhoneのブラウザでアクセスします。  
 
-![./images/site-image-1.png'] ![./images/site-image-2.png]
+![](./images/site-image-1.png') ![](./images/site-image-2.png)
 
 phpが動作するWebサーバーのドキュメントルート以下にプログラムファイルdeshu.phpを配置します。  
 
