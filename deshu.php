@@ -1,24 +1,3 @@
-<!doctype html>
-<html lang="ja"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=320px">
-<style>
-  *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;margin:0;padding:0;text-align:center;}
-  table{font-family: 'Cormorant Garamond', serif;border-collapse:collapse;margin:auto;}
-  td{height:44px;text-align:center;color:black;font-weight:bolder;}
-  table,th,td{border:solid 3px #dedede;}
-  th,td{width:38px;}
-  .dryday{background:url('./images/dry.png');}
-  .drinkday{background:url('./images/beer.png');}
-  .lowlight{color:lightgray;}
-  #tableheader,#tablelabel{height:1.2em;}
-  #today{background:url('./images/check.png');}
-  #nav{display:flex;justify-content:space-around;align-items:center;}
-  #nav a{text-decoration:none;}
-</style>
-<link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
-</head><body>
-<h1>DE酒🍻のぉと</h1>
 <?php
 date_default_timezone_set('Asia/Tokyo');
 $currDatetime = new Datetime();
@@ -32,6 +11,36 @@ if ($month < 1 and $month > 12) {
   $month = $currDatetime->format('n');
 }
 $dispDatetime->setDate($year,$month,1);
+foreach(glob("./deshu-note/".$dispDatetime->format('Y').$dispDatetime->format('m')."*.deshu") as $file) {
+  $dryday[] = substr(pathinfo($file,PATHINFO_FILENAME),-2);
+}
+$stylesheet = <<< EOM
+<style>
+  *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;margin:0;padding:0;text-align:center;}
+  table{font-family: 'Cormorant Garamond', serif;border-collapse:collapse;margin:auto;}
+  td{height:44px;text-align:center;color:black;font-weight:bolder;}
+  table,th,td{border:solid 3px #dedede;}
+  th,td{width:38px;}
+  .drinkday{background:url('./images/beer.png');}
+  .lowlight{color:lightgray;}
+  #tableheader,#tablelabel{height:1.2em;}
+  #today{background:url('./images/check.png');}
+  #nav{display:flex;justify-content:space-around;align-items:center;}
+  #nav a{text-decoration:none;}
+EOM;
+foreach($dryday as $drytag) {
+  $stylesheet = $stylesheet."#d".$drytag."{background:url('./images/dry.png');}";
+}
+?>
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=320px">
+<link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
+<?php echo $stylesheet."</style>"; ?>
+</head><body>
+<h1>DE酒🍻のぉと</h1>
+<?php
 $prevDatetime = clone $dispDatetime;
 $nextDatetime = clone $dispDatetime;
 $prevDatetime->modify('-1 months');
@@ -54,11 +63,7 @@ for ($row = 0;$row < 6;$row++) {
       } else if ($dispDatetime == $currDatetime) {
         $tablerow[$row] = $tablerow[$row]."<td id='today'>".$dispDatetime->format('j')."</td>";
       } else {
-        if ($dispDatetime->format('j') == 6 or $dispDatetime->format('j') == 17) {
-          $tablerow[$row] = $tablerow[$row]."<td class='dryday'>".$dispDatetime->format('j')."</td>";
-        } else {
-          $tablerow[$row] = $tablerow[$row]."<td class='drinkday'>".$dispDatetime->format('j')."</td>";
-        }
+        $tablerow[$row] = $tablerow[$row]."<td class='drinkday' id='d".$dispDatetime->format('d')."'>".$dispDatetime->format('j')."</td>";
       }
     }
     $dispDatetime->modify('1 days');
