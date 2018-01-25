@@ -21,13 +21,20 @@ $stylesheet = <<< EOM
   td{height:44px;text-align:center;color:black;font-weight:bolder;}
   table,th,td{border:solid 3px #dedede;}
   th,td{width:38px;}
-  .drinkday{background:url('./images/beer.png');}
   .lowlight{color:lightgray;}
   #tableheader,#tablelabel{height:1.2em;}
   #today{background:url('./images/check.png');}
   #nav{display:flex;justify-content:space-around;align-items:center;}
   #nav a{text-decoration:none;}
 EOM;
+foreach(glob('/usr/local/www/never/deshu-note/*.active') as $filename) {
+  $activeDate = pathinfo($filename,PATHINFO_FILENAME);
+}
+if ($dispDatetime->format('Ymd') < $activeDate) {
+  $stylesheet = $stylesheet.".drinkday{background:url('./images/nodata.png');}";
+} else {
+  $stylesheet = $stylesheet.".drinkday{background:url('./images/beer.png');}";
+}
 foreach($dryday as $drytag) {
   $stylesheet = $stylesheet."#d".$drytag."{background:url('./images/dry.png');}";
 }
