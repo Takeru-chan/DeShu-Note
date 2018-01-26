@@ -11,9 +11,6 @@ if ($month < 1 or $month > 12) {
   $month = $currDatetime->format('n');
 }
 $dispDatetime->setDate($year,$month,1);
-foreach(glob("./deshu-note/".$dispDatetime->format('Y').$dispDatetime->format('m')."*.deshu") as $file) {
-  $dryday[] = substr(pathinfo($file,PATHINFO_FILENAME),-2);
-}
 $stylesheet = <<< EOM
 <style>
   *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;margin:0;padding:0;text-align:center;}
@@ -33,11 +30,22 @@ foreach(glob('/usr/local/www/never/deshu-note/*.active') as $filename) {
 }
 if ($dispDatetime->format('Ymd') < $activeDate) {
   $stylesheet = $stylesheet.".drinkday{background:url('./images/nodata.png');}";
-} else {
-  $stylesheet = $stylesheet.".drinkday{background:url('./images/beer.png');}";
 }
-foreach($dryday as $drytag) {
-  $stylesheet = $stylesheet."#d".$drytag."{background:url('./images/dry.png');}";
+$line = @file(__DIR__ . "/deshu-note/".$dispDatetime->format('Y').$dispDatetime->format('m').".deshu", FILE_IGNORE_NEW_LINES);
+for ($i=0; $i<count($line); $i++) {
+  $param = explode(":",$line[$i]);
+  switch ($param[1]) {
+  case 'high':
+  case 'low':
+    $stylesheet = $stylesheet."#d".$param[0]."{background:url('./images/beer-".$param[1].".png');}";
+    break;
+  case 'mid':
+    $stylesheet = $stylesheet."#d".$param[0]."{background:url('./images/beer.png');}";
+    break;
+  case 'dry':
+    $stylesheet = $stylesheet."#d".$param[0]."{background:url('./images/dry.png');}";
+    break;
+  }
 }
 ?>
 <!doctype html>
