@@ -14,12 +14,9 @@ phpが動作するWebサーバーのドキュメントルート以下にプロ�
 
 プログラムファイル配置ディレクトリ中のデータディレクトリ「deshu-note」下にyyyymm.deshuというファイル名のデータを配置します。  
 
-yyyymmdd.activeというファイルがある場合、その日付以前の年月は記録なし扱いとなります。  
-
 - \[prog_dir\]
     - deshu.php
     - \[deshu-note\]
-        - 20180101.active
         - 201801.deshu
         - ...
 

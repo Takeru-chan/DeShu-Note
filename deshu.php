@@ -25,9 +25,15 @@ $stylesheet = <<< EOM
   #nav{display:flex;justify-content:space-around;align-items:center;}
   #nav a{text-decoration:none;}
 EOM;
-foreach(glob('/usr/local/www/never/deshu-note/*.active') as $filename) {
-  $activeDate = pathinfo($filename,PATHINFO_FILENAME);
+foreach(glob('./deshu-note/*.deshu') as $filename) {
+  $basename[] = pathinfo($filename,PATHINFO_FILENAME);
 }
+$activeDate = min($basename);
+$line = @file(__DIR__.'/deshu-note/'.$activeDate.'.deshu',FILE_IGNORE_NEW_LINES);
+for ($i=0;$i< count($line);$i++) {
+  $date[] = explode(':',$line[$i])[0];
+}
+$activeDate = $activeDate.min($date);
 if ($dispDatetime->format('Ymd') < $activeDate) {
   $stylesheet = $stylesheet.".drinkday{background:url('./images/nodata.png');}";
 }
